@@ -65,7 +65,7 @@ setuptools.setup(
   description = 'A hack to run custom steps when building documentation on Read the Docs.',
   long_description = long_description,
   long_description_content_type = 'text/markdown',
-  url = None,
+  url = 'https://github.com/NiklasRosenstein/readthedocs-custom-steps/',
   license = None,
   py_modules = ['readthedocs_custom_steps'],
   package_dir = {'': 'src'},

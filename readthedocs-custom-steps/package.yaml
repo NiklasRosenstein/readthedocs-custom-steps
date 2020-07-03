@@ -4,6 +4,7 @@ author:
   name: Niklas Rosenstein
   email: rosensteinniklas@gmail.com
 description: A hack to run custom steps when building documentation on Read the Docs.
+url: https://github.com/NiklasRosenstein/readthedocs-custom-steps/
 readme: ../README.md
 requirements:
 - python ^3.5
