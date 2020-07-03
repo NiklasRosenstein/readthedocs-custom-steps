@@ -18,6 +18,8 @@ args = parser.parse_args()
 if os.getenv('SETUPTOOLS_BUILD') == 'True':
   sys.exit()
 
+raise Exception('HELLO FROM install-hack.py! READTHEDOCS=' + str(os.getenv('READTHEDOCS')))
+
 if not args.rtd and os.getenv('READTHEDOCS') != 'True':
   raise EnvironmentError(
     'READTHEDOCS must be {!r}, got {!r}.'.format('True', os.getenv('READTHEDOCS')))

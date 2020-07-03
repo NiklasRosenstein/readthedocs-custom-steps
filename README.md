@@ -11,7 +11,7 @@ mkdocs: {}  # tell readthedocs to use mkdocs
 python:
   version: 3.7
   install:
-    - requirements: readthedocs-custom-steps
+    - requirements: requirements.txt  # must contain "readthedocs-custom-steps"
 ```
 
 ```yml
