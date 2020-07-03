@@ -1,0 +1,7 @@
+release_date: null
+changes:
+- type: fix
+  component: general
+  description: No longer produce wheels when publishing to PyPI, readthedocs-custom-steps
+    must be installed as a source distribution
+  fixes: []
