@@ -9,3 +9,15 @@ test:
 		mkdir /tmp/test; cd /tmp/test; cp /opt/src/test/.readthedocs-custom-steps.yml .; \
 		python -m mkdocs build --clean --site-dir _site/html --config-file mkdocs.yml; \
 	"
+
+.PHONY: update
+update:
+	shore -C readthedocs-custom-steps update
+
+.PHONY: bump
+bump:
+	shore -C readthedocs-custom-steps $(TYPE) --tag --push
+
+.PHONY: publish
+publish:
+	SETUPTOOLS_BUILD=True shore -C readthedocs-custom-steps publish pypi

@@ -26,19 +26,16 @@ steps:
 
 __Testing this package__
 
-To test this package in a similar environment as Read the Docs itself, you can run `make -f test/Makefile`.
+To test this package in a similar environment as Read the Docs itself, you can run `make test`.
 Note that this requires Docker and a Docker volume called `pip-caches`. Note that the Make command
-is expected to return status code `27` as defined in the `test/readthedocs-config.yml` file.
+is expected to return status code `27` as defined in the `test/.readthedocs-custom-steps.yml` file.
 
 __Release process__
 
-Bump the version number:
+Requires [Shore](https://pypi.org/project/nr.shore).
 
-    $ shore -C readthedocs-custom-steps bump --minor --tag --push
-  
-Publish to PyPI:
-
-    $ SETUPTOOLS_BUILD=True shore -C readthedocs-custom-steps publish pypi
+    $ make bump TYPE=--minor
+    $ make publish
 
 ---
 
