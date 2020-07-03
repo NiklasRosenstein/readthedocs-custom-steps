@@ -26,6 +26,16 @@ To test this package in a similar environment as Read the Docs itself, you can r
 Note that this requires Docker and a Docker volume called `pip-caches`. Note that the Make command
 is expected to return status code `27` as defined in the `test/readthedocs-config.yml` file.
 
+__Release process__
+
+Bump the version number:
+
+    $ shore -C readthedocs-custom-steps bump --major --tag --push
+  
+Publish to PyPI:
+
+    $ SETUPTOOLS_BUILD=True shore -C readthedocs-custom-steps publish pypi
+
 ---
 
 <p align="center">Copyright &copy; 2020 Niklas Rosenstein</p>
