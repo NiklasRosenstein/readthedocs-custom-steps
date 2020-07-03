@@ -16,7 +16,7 @@ update:
 
 .PHONY: bump
 bump:
-	shore -C readthedocs-custom-steps $(TYPE) --tag --push
+	shore -C readthedocs-custom-steps bump $(TYPE) --tag --push
 
 .PHONY: publish
 publish:
