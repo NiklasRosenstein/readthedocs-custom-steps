@@ -15,6 +15,9 @@ parser.add_argument('--dry', action='store_true', help='Do not actually make cha
 parser.add_argument('--rtd', action='store_true', help='Behave as if READTHEDOCS was set.')
 args = parser.parse_args()
 
+if os.getenv('SETUPTOOLS_BUILD') == 'True':
+  sys.exit()
+
 if not args.rtd and os.getenv('READTHEDOCS') != 'True':
   raise EnvironmentError(
     'READTHEDOCS must be {!r}, got {!r}.'.format('True', os.getenv('READTHEDOCS')))
