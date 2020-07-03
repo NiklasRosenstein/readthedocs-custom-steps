@@ -1,0 +1,9 @@
+release_date: null
+changes:
+- type: improvement
+  component: general
+  description: Read `.readthedocs-custom-steps.yml`, fall back to `.readthedocs.yml`
+    and `x-custom-steps` only if the former file does not exist. Read the Docs does
+    not currently support custom keys in the configuration, which is why we need a
+    separate file.
+  fixes: []

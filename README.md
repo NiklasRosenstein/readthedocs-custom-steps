@@ -11,9 +11,13 @@ mkdocs: {}  # tell readthedocs to use mkdocs
 python:
   version: 3.7
   install:
-    - requirements: readthedocs-custom-steps  # ...
-x-custom-steps:
-  - echo "Custom steps to build documentation at $SITE_DIR here"
+    - requirements: readthedocs-custom-steps
+```
+
+```yml
+# .readthedocs-custom-steps.yml
+steps:
+- echo "Custom steps to produce HTML in $SITE_DIR here ..."
 ```
 
 > __Important__: This module should not be installed outside of a Read the Docs build environment.
@@ -30,7 +34,7 @@ __Release process__
 
 Bump the version number:
 
-    $ shore -C readthedocs-custom-steps bump --major --tag --push
+    $ shore -C readthedocs-custom-steps bump --minor --tag --push
   
 Publish to PyPI:
 
