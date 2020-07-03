@@ -3,7 +3,7 @@ version: 0.0.0
 author:
   name: Niklas Rosenstein
   email: rosensteinniklas@gmail.com
-description: Package description here.
+description: A hack to run custom steps when building documentation on Read the Docs.
 readme: ../README.md
 requirements:
 - python ^3.5
