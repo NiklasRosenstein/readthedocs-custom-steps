@@ -47,6 +47,3 @@ if not args.dry:
   with open(sys.executable, 'w') as fp:
     fp.write(script)
   os.chmod(sys.executable, os.stat(sys.executable).st_mode | stat.S_IEXEC)
-
-
-raise Exception('Replaced "{}" with:\n\n{}'.format(script))
