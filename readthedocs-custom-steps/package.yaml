@@ -1,0 +1,12 @@
+name: readthedocs-custom-steps
+version: 0.0.0
+author:
+  name: Niklas Rosenstein
+  email: rosensteinniklas@gmail.com
+description: Package description here.
+readme: ../README.md
+requirements:
+- python ^3.5
+- PyYAML ^5.0
+install-hooks:
+- install: bin/install-hack.py
