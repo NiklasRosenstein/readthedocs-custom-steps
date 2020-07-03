@@ -25,7 +25,7 @@ if os.path.isfile(new_executable):
   sys.exit(0)
 
 script = '''#!/bin/bash
-
+set -e
 if [[ "$1" == "-m" ]] && [[ "$2" == "mkdocs" ]] && [[ "$3" == "build" ]]; then
   shift
   shift
@@ -33,7 +33,6 @@ if [[ "$1" == "-m" ]] && [[ "$2" == "mkdocs" ]] && [[ "$3" == "build" ]]; then
 else
   {python} "$@"
 fi
-exit $?
 '''.format(python=pipes.quote(new_executable))
 
 print('"{}" -> "{}"'.format(sys.executable, new_executable))

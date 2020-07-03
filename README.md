@@ -20,6 +20,12 @@ x-custom-steps:
 > It will rename your Python executable and install a substitute. It does not currently provide an
 > automated way to revert this change.
 
+__Testing this package__
+
+To test this package in a similar environment as Read the Docs itself, you can run `make -f test/Makefile`.
+Note that this requires Docker and a Docker volume called `pip-caches`. Note that the Make command
+is expected to return status code `27` as defined in the `test/readthedocs-config.yml` file.
+
 ---
 
 <p align="center">Copyright &copy; 2020 Niklas Rosenstein</p>

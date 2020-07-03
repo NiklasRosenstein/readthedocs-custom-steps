@@ -1,6 +1,8 @@
 
 import argparse
+import os
 import yaml
+import subprocess
 import sys
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
@@ -36,8 +38,8 @@ def main():
   os.environ['SITE_DIR'] = args.site_dir
   os.environ['MKDOCS_CONFIG_FILE'] = args.config_file
 
-  bash_script = '\n'.join(['set -eo pipefile'] + config['x-custom-steps'])
-  sys.exit(subprocess.call('bash', '-c', bash_script))
+  bash_script = '\n'.join(['set -e'] + config['x-custom-steps'])
+  sys.exit(subprocess.call(['bash', '-c', bash_script]))
 
 
 if __name__ == '__main__':
