@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 
 def main():
