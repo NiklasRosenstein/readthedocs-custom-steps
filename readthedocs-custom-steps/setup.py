@@ -62,7 +62,7 @@ setuptools.setup(
   version = version,
   author = 'Niklas Rosenstein',
   author_email = 'rosensteinniklas@gmail.com',
-  description = 'Package description here.',
+  description = 'A hack to run custom steps when building documentation on Read the Docs.',
   long_description = long_description,
   long_description_content_type = 'text/markdown',
   url = None,

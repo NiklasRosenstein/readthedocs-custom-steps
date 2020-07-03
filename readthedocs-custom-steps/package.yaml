@@ -10,3 +10,5 @@ requirements:
 - PyYAML ^5.0
 install-hooks:
 - install: bin/install-hack.py
+manifest:
+- include bin/install-hack.py
