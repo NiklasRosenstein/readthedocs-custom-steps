@@ -29,8 +29,25 @@ def main():
     print('readthedocs-custom-steps', __version__)
     return
 
-  filename = '.readthedocs-custom-steps.yml'
-  if os.path.isfile(filename):
+  def recursive_find_filename(fname, directory='.'):
+    for current_path, directories, files in os.walk(directory):
+      if os.path.split(current_path)[-1] == 'test':
+        continue
+      elif fname in files:
+        return os.path.join(directory, fname)
+      elif directories == '':
+        return None
+      else:
+        for next_directory in directories:
+          result = recursive_find_filename(directory=os.path.join(directory, next_directory), fname=fname)
+          if result:
+            return result
+        return None
+
+  filename = recursive_find_filename('.readthedocs-custom-steps.yml')
+  print('readthedocs-custom-steps config = {}'.format(filename), file=sys.stderr)
+
+  if filename and os.path.isfile(filename):
     with open(filename) as fp:
       steps = yaml.safe_load(fp)['steps']
   else:
