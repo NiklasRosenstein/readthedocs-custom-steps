@@ -29,10 +29,12 @@ if os.path.isfile(new_executable):
 
 script = '''#!/bin/bash
 set -e
-if [[ "$1" == "-m" ]] && [[ "$2" == "mkdocs" ]] && [[ "$3" == "build" ]]; then
+if [[ "$1" == "-m" ]] && [[ "$2" == "mkdocs" ]] && [[ "$3" == "build" ]] && [[ -z "$RTD_CUSTOM_ENTRY" ]]; then
   shift
+  RTD_CUSTOM_ENTRY=true {python} -c "from readthedocs_custom_steps import main; main()" "$@"
+elif [[ "$1" == "-m" ]] && [[ "$2" == "sphinx" ]]; then
   shift
-  {python} -c "from readthedocs_custom_steps import main; main()" "$@"
+  RTD_CUSTOM_ENTRY=true {python} -c "from readthedocs_custom_steps import main; main()" "$@"
 else
   {python} "$@"
 fi

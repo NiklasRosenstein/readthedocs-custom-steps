@@ -1,3 +1,0 @@
-steps:
-  - echo "Custom steps to build documentation at $SITE_DIR here"
-  - exit 27
