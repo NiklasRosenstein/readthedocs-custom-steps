@@ -73,6 +73,8 @@ requirements = [
 ]
 test_requirements = [
   'docker >=5.0.0,<6.0.0',
+  'six',
+  'types-PyYAML',
 ]
 extras_require = {}
 extras_require['test'] = test_requirements
