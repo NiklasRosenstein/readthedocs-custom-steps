@@ -6,7 +6,7 @@ import sys
 import typing as t
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
-__version__ = '0.3.0.post1'
+__version__ = '0.4.0'
 
 
 def load_custom_steps() -> t.List[str]:

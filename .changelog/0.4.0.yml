@@ -11,3 +11,4 @@ changes:
   component: general
   description: add unit tests for Python 3.6-3.9 and Mkdocs/Sphinx
   fixes: []
+release_date: '2021-08-13'
