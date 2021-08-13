@@ -12,9 +12,9 @@ PROJECT_DIRECTORY = str(Path(__file__).parent.parent.parent.resolve())
   argnames='python_image',
   argvalues=[
     'python:3.6',
-    #'python:3.7',
-    #'python:3.8',
-    #'python:3.9',
+    'python:3.7',
+    'python:3.8',
+    'python:3.9',
   ])
 @pytest.mark.parametrize(
   argnames='command',

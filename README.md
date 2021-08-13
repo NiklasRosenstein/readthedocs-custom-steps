@@ -1,42 +1,34 @@
 # readthedocs-custom-steps
 
-A hack to run custom steps when building documentation on Read the Docs. 
-
-__Configuration__
-
-```yml
-# .readthedocs.yml
-version: 2
-mkdocs: {}  # tell readthedocs to use mkdocs
-python:
-  version: 3.7
-  install:
-    - requirements: requirements.txt  # must contain "readthedocs-custom-steps"
-```
-
-```yml
-# .readthedocs-custom-steps.yml
-steps:
-- echo "Custom steps to produce HTML in $SITE_DIR here ..."
-```
+A hack to run custom steps when building documentation on Read the Docs.
 
 > __Important__: This module should not be installed outside of a Read the Docs build environment.
 > It will rename your Python executable and install a substitute. It does not currently provide an
 > automated way to revert this change.
 
-__Testing this package__
+## How to use this?
 
-To test this package in a similar environment as Read the Docs itself, you can run `make test`.
-Note that this requires Docker and a Docker volume called `pip-caches`. Note that the Make command
-is expected to return status code `27` as defined in the `test/.readthedocs-custom-steps.yml` file.
+Rtd-cs overrides your `python` installation with a Bash script that dispatches the
+execution of custom steps upon invokation of `python -m mkdocs` or `python -m sphinx`.
+The commands to run are defined in a file called `.readthedocs-custom-steps.yml`.
 
-__Release process__
+__Example:__
 
-Requires [Shore](https://pypi.org/project/nr.shore).
+```yml
+# .readthedocs-custom-steps.yml
+steps:
+- bash .scripts/generate-changelog.sh >docs/changelog.md
+- python -m "$@"
+```
 
-    $ make bump TYPE=--minor
-    $ make publish
+Here, `$@` contains the arguments after `python -m` in the Read the Docs build step, for example:
+
+* `mkdocs build --clean --site-dir _site/html --config-file mkdocs.yml`
+* `sphinx -T -b html -d _build/doctrees -D language=en . _build/html`
+
+An infinite recursion of this script invoking itself in the example above is prevented automatically
+with the `RTD_CUSTOM_ENTRY` environment variable.
 
 ---
 
-<p align="center">Copyright &copy; 2020 Niklas Rosenstein</p>
+<p align="center">Copyright &copy; 2021 Niklas Rosenstein</p>
