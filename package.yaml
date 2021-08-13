@@ -21,6 +21,7 @@ requirements:
 
 test-requirements:
 - docker ^5.0.0
+- six  # because of docker==5.0.0 (see https://github.com/docker/docker-py/issues/2867)
 
 test-drivers:
 - type: pytest
