@@ -43,7 +43,7 @@ def find_config_file() -> Path:
     if path not in choices:
       choices.append(path)
 
-  raise RuntimeError(f'file {READTHEDOCS_CONFIG} could not be found, searched in\n- ' + '\n- '.join(choices))
+  raise RuntimeError(f'file {READTHEDOCS_CONFIG} could not be found, searched in\n- ' + '\n- '.join(map(str, choices)))
 
 
 def main():
