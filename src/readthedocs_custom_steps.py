@@ -37,13 +37,13 @@ def find_config_file() -> Path:
   choices: t.List[Path] = []
 
   for directory in [Path('.'), Path('docs')] + [Path(f).parent for f in get_referenced_requirements_files()]:
-    path = (Path(directory) / READTHEDOCS_CONFIG).resolve()
+    path = (Path(directory) / READTHEDOCS_CS_CONFIG).resolve()
     if path.exists():
       return path
     if path not in choices:
       choices.append(path)
 
-  raise RuntimeError(f'file {READTHEDOCS_CONFIG} could not be found, searched in\n- ' + '\n- '.join(map(str, choices)))
+  raise RuntimeError(f'file {READTHEDOCS_CS_CONFIG} could not be found, searched in\n- ' + '\n- '.join(map(str, choices)))
 
 
 def main():
