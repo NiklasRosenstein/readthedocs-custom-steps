@@ -1,12 +1,28 @@
 
 import os
-import yaml
 import subprocess
 import sys
 import typing as t
+from pathlib import Path
+
+import yaml
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
 __version__ = '0.4.0'
+
+READTHEDOCS_CONFIG = Path('.readthedocs.yml')
+READTHEDOCS_CS_CONFIG = Path('.readthedocs-custom-steps.yml')
+
+
+def get_referenced_requirements_files() -> t.List[str]:
+  """
+  Reads the Read the Docs configuration file and extracts all filenames referenced in
+  `$.python.install[*].requirements` config values.
+  """
+
+  config = READ
+
+
 
 
 def load_custom_steps() -> t.List[str]:

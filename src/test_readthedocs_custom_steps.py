@@ -10,7 +10,7 @@ import docker  # type: ignore
 import pytest
 
 PIP_CACHES_VOLUME = 'pip-caches'
-PROJECT_DIRECTORY = str(Path(__file__).parent.parent.parent.resolve())
+PROJECT_DIRECTORY = str(Path(__file__).parent.parent.resolve())
 CUSTOM_STEPS_YAML = '''
 steps:
 - echo rtd-custom-steps says "$@"
@@ -59,6 +59,7 @@ def test_mkdocs_hook(python_image: str, command: str, requirements: t.List[str],
     tmpfile.write(CUSTOM_STEPS_YAML)
     tmpfile.close()
 
+    print("starting container")
     container = client.containers.run(
       python_image,
       volumes={
@@ -73,13 +74,16 @@ def test_mkdocs_hook(python_image: str, command: str, requirements: t.List[str],
         mkdir /tmp/test; cd /tmp/test; cp /opt/.readthedocs-custom-steps.yml .
         python -m {command}
       ''')],
-      detach=True,
+      detach=False,
       stdin_open=False,
     )
 
+    print("started container")
     stack.callback(lambda: stop_and_remove_container(container))
 
+    print("waiting container")
     exit_code = container.wait()['StatusCode']
+    print("done container", exit_code)
     result = container.logs().decode()
     if exit_code != 0:
       print(result)
