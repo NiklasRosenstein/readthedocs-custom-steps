@@ -1,28 +1,49 @@
 
 import os
-import yaml
 import subprocess
 import sys
 import typing as t
+from pathlib import Path
+
+import yaml
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
 __version__ = '0.4.0'
 
+READTHEDOCS_CONFIG = Path('.readthedocs.yml')
+READTHEDOCS_CS_CONFIG = Path('.readthedocs-custom-steps.yml')
 
-def load_custom_steps() -> t.List[str]:
-  filename = '.readthedocs-custom-steps.yml'
-  if os.path.isfile(filename):
-    with open(filename) as fp:
-      steps = yaml.safe_load(fp)['steps']
-  else:
-    with open('.readthedocs.yml') as fp:
-      config = yaml.safe_load(fp)
-    # NOTE: Read the Docs does not currently support custom keys in the configuration.
-    #   We keep this code in case it allows custom keys in the future.
-    if 'x-custom-steps' not in config:
-      sys.exit('error: missing file "{}" or key "x-custom-steps" in ".readthedocs.yml"'.format(filename))
-    steps = config['x-custom-steps']
-  return steps
+
+def get_referenced_requirements_files() -> t.List[str]:
+  """
+  Reads the Read the Docs configuration file and extracts all filenames referenced in
+  `$.python.install[*].requirements` config values.
+  """
+
+  if not READTHEDOCS_CONFIG.exists():
+    return []
+
+  config = yaml.safe_load(READTHEDOCS_CONFIG.read_text())
+  install = config.get('python', {}).get('install', [])
+  requirements: t.List[t.Optional[str]]= [x.get('requirements') for x in install]
+  return [x for x in requirements if x]
+
+
+def find_config_file() -> Path:
+  """
+  Finds the Rtd-CS config file.
+  """
+
+  choices: t.List[Path] = []
+
+  for directory in [Path('.'), Path('docs')] + [Path(f).parent for f in get_referenced_requirements_files()]:
+    path = (Path(directory) / READTHEDOCS_CS_CONFIG).resolve()
+    if path.exists():
+      return path
+    if path not in choices:
+      choices.append(path)
+
+  raise RuntimeError(f'file {READTHEDOCS_CS_CONFIG} could not be found, searched in\n- ' + '\n- '.join(map(str, choices)))
 
 
 def main():
@@ -31,7 +52,9 @@ def main():
     print('readthedocs-custom-steps', __version__)
     return
 
-  steps = load_custom_steps()
+  config_file = find_config_file()
+  steps = yaml.safe_load(config_file.read_text())['steps']
+
   bash_script = '\n'.join(['set -e'] + steps)
   sys.exit(subprocess.call(['bash', '-c', bash_script] + sys.argv))
 

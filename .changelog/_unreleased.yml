@@ -1,0 +1,6 @@
+changes:
+- type: feature
+  component: general
+  description: search for configuration file in multipe locations (`.`, `./docs` and
+    directories referenced in `.readthedocs.yml$.python.install[*].requirements`)
+  fixes: []
