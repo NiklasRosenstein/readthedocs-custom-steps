@@ -13,7 +13,7 @@ __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
 __version__ = '0.4.0'
 
 log = logging.getLogger(__name__)
-PYENV_SHIMS_DIR = Path('/home/docs/.pyenv/shims')
+PYENV_SHIMS_DIR = Path(os.path.expanduser('~')) / '.pyenv/shims'
 READTHEDOCS_CONFIG = Path('.readthedocs.yml')
 READTHEDOCS_CS_CONFIG = Path('.readthedocs-custom-steps.yml')
 
