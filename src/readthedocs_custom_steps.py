@@ -61,7 +61,7 @@ def find_pyenv_shims() -> t.Dict[t.Tuple[int, int], str]:
 
   result = {}
   for path in PYENV_SHIMS_DIR.iterdir():
-    match = re.match(r'python3\.(\d+)', path.name)
+    match = re.match(r'^python3\.(\d+)$', path.name)
     if match:
       result[(3, int(match.group(1)))] = str(path)
 
