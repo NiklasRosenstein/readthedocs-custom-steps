@@ -4,3 +4,9 @@ changes:
   description: search for configuration file in multipe locations (`.`, `./docs` and
     directories referenced in `.readthedocs.yml$.python.install[*].requirements`)
   fixes: []
+- type: feature
+  component: general
+  description: PYTHON environment variables are now available and populated with the
+    Python shims detected under `~/.pyenv/shims`
+  fixes:
+  - '#4'
