@@ -50,7 +50,7 @@ def find_config_file() -> Path:
   raise RuntimeError(f'file {READTHEDOCS_CS_CONFIG} could not be found, searched in\n- ' + '\n- '.join(map(str, choices)))
 
 
-def find_pyenv_shims(self) -> t.Dict[t.Tuple[int, int], str]:
+def find_pyenv_shims() -> t.Dict[t.Tuple[int, int], str]:
   """
   Finds Python shims in `/home/docs/.pyenv/shims` and returns a dictionary mapping Python major.minor version
   pairs to the full path.
