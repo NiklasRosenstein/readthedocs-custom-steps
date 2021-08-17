@@ -3,3 +3,4 @@ changes:
   component: general
   description: fix `find_pyenv_shims()` to avoid matching e.g. `python-3.8-config`
   fixes: []
+release_date: '2021-08-17'
