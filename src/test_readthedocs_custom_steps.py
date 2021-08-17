@@ -119,7 +119,7 @@ def test_mkdocs_hook(
 
         # Link shim to test if rtd-cs detects it
         mkdir -p /root/.pyenv/shims
-        ln -s "$(which python)" /root/.pyenv/shims/python3.6
+        ln -s "$(which python)" /root/.pyenv/shims/python3.7
 
         # Invoke build command, which should trigger rtd-cs
         python -m {command}
@@ -139,4 +139,4 @@ def test_mkdocs_hook(
     lines = result.splitlines()
     assert lines[0] == f'rtd-custom-steps says {command}'
     assert re.match(second_line_regex, lines[1]) is not None
-    assert lines[2] == '/root/.pyenv/shim/python3.7'
+    assert lines[2] == '/root/.pyenv/shims/python3.7'
