@@ -10,7 +10,7 @@ from pathlib import Path
 import yaml
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
-__version__ = '0.4.0'
+__version__ = '0.5.0'
 
 log = logging.getLogger(__name__)
 PYENV_SHIMS_DIR = Path(os.path.expanduser('~')) / '.pyenv/shims'

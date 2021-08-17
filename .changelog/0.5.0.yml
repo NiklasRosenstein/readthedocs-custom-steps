@@ -10,3 +10,4 @@ changes:
     Python shims detected under `~/.pyenv/shims`
   fixes:
   - '#4'
+release_date: '2021-08-17'
