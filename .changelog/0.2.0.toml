@@ -1,0 +1,7 @@
+release-date = "2020-07-03"
+
+[[entries]]
+id = "b85c1e87-01b0-4afc-9ed8-19156d61ee75"
+type = "improvement"
+description = "Read `.readthedocs-custom-steps.yml`, fall back to `.readthedocs.yml` and `x-custom-steps` only if the former file does not exist. Read the Docs does not currently support custom keys in the configuration, which is why we need a separate file."
+author = "@NiklasRosenstein"

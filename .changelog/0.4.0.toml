@@ -1,0 +1,19 @@
+release-date = "2021-08-13"
+
+[[entries]]
+id = "4393c6e7-75e0-41a8-b6cb-ebabd9fd09f8"
+type = "feature"
+description = "support hooking into `sphinx` calls as well"
+author = "@NiklasRosenstein"
+
+[[entries]]
+id = "1d5717a8-81af-469c-b5b7-79b79bbb3cf6"
+type = "improvement"
+description = "upgrade `package.yml` to be compatible with `shut==17.0.0`"
+author = "@NiklasRosenstein"
+
+[[entries]]
+id = "01a0b787-4263-4398-a4ff-a835cb1f4a73"
+type = "improvement"
+description = "add unit tests for Python 3.6-3.9 and Mkdocs/Sphinx"
+author = "@NiklasRosenstein"

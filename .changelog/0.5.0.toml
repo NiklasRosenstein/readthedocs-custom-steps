@@ -1,0 +1,16 @@
+release-date = "2021-08-17"
+
+[[entries]]
+id = "d3f08677-c1d0-4d1c-b0da-f555c8c4962d"
+type = "feature"
+description = "search for configuration file in multipe locations (`.`, `./docs` and directories referenced in `.readthedocs.yml$.python.install[*].requirements`)"
+author = "@NiklasRosenstein"
+
+[[entries]]
+id = "97b4dde9-f90a-4f31-9de7-8c5aedd17898"
+type = "feature"
+description = "PYTHON environment variables are now available and populated with the Python shims detected under `~/.pyenv/shims`"
+author = "@NiklasRosenstein"
+issues = [
+    "https://github.com/NiklasRosenstein/readthedocs-custom-steps/issues/4",
+]

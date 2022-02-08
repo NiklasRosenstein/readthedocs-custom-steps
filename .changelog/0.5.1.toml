@@ -1,0 +1,7 @@
+release-date = "2021-08-17"
+
+[[entries]]
+id = "f942fcbb-3eb5-4884-be3a-5f0c411b8b0a"
+type = "fix"
+description = "fix `find_pyenv_shims()` to avoid matching e.g. `python-3.8-config`"
+author = "@NiklasRosenstein"
