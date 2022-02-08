@@ -28,6 +28,6 @@ test-requirements:
 
 test-drivers:
 - type: pytest
-  directory: test
+  directory: ../test
   parallelism: 2
 - type: mypy
