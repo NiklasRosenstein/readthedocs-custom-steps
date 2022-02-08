@@ -29,5 +29,5 @@ test-requirements:
 test-drivers:
 - type: pytest
   directory: ../test
-  parallelism: 2
+  parallelism: 6
 - type: mypy
