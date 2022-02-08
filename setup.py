@@ -8,8 +8,6 @@ import os
 import setuptools
 import sys
 
-command = sys.argv[1] if len(sys.argv) >= 2 else None
-
 install_hooks = {
   "before-install": [
     [
@@ -44,23 +42,7 @@ class install_command(_install_command):
     super(install_command, self).run()
     _run_hooks('after-install')
 
-readme_file = 'README.md'
-
-def _tempcopy(src, dst):
-  import atexit, shutil
-  if not os.path.isfile(dst):
-    if not os.path.isfile(src):
-      msg = '"{}" does not exist, and cannot copy it from "{}" either'.format(dst, src)
-      # NOTE: In dist/build commands that are not invoked by Pip, we enforce that the license file
-      #       must be present. See https://github.com/NiklasRosenstein/shut/issues/22
-      if command and 'PIP_REQ_TRACKER' not in os.environ and ('build' in command or 'dist' in command):
-        raise RuntimeError(msg)
-      print('warning:', msg, file=sys.stderr)
-      return
-    shutil.copyfile(src, dst)
-    atexit.register(lambda: os.remove(dst))
-
-_tempcopy('../README.md', readme_file)
+readme_file = 'readme.md'
 if os.path.isfile(readme_file):
   with io.open(readme_file, encoding='utf8') as fp:
     long_description = fp.read()
@@ -69,7 +51,8 @@ else:
   long_description = None
 
 requirements = [
-  'PyYAML >=5.0.0,<6.0.0',
+  'PyYAML >=5.0.0',
+  'tomli >=1.2.3',
 ]
 test_requirements = [
   'docker >=5.0.0,<6.0.0',

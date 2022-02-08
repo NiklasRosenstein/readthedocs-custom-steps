@@ -22,6 +22,14 @@ python:
   install:
     - requirements: rtd/requirements.txt
 '''
+PYPROJECT_TOML = '''
+[tool.readthedocs-custom-steps]
+script = """
+echo rtd-custom-steps says "$@"
+python -m "${1}" --version
+echo $PYTHON
+"""
+'''
 
 
 def stop_and_remove_container(container):
@@ -39,10 +47,11 @@ def stop_and_remove_container(container):
 @pytest.mark.parametrize(
   argnames='python_image',
   argvalues=[
-    'python:3.6',
-    'python:3.7',
-    'python:3.8',
-    'python:3.9',
+    #'python:3.6-alpine',
+    #'python:3.7-alpine',
+    #'python:3.8-alpine',
+    'python:3.9-alpine',
+    'python:3.10-alpine',
   ])
 @pytest.mark.parametrize(
   argnames='config_dir',
@@ -53,11 +62,18 @@ def stop_and_remove_container(container):
   argvalues=[None, READTHEDOCS_CONFIG_YAML],
 )
 @pytest.mark.parametrize(
+  argnames=('steps_filename', 'steps_content'),
+  argvalues=[
+    ('.readthedocs-custom-steps.yml', READTHEDOCS_CONFIG_YAML),
+    ('pyproject.toml', PYPROJECT_TOML),
+  ]
+)
+@pytest.mark.parametrize(
   argnames=('command', 'requirements', 'second_line_regex'),
   argvalues=[
     (
       'mkdocs build --clean --site-dir _site/html --config-file mkdocs.yml',
-      ['mkdocs'],
+      ['mkdocs==1.2.3'],
       r'python -m mkdocs, version .*$',
     ),
     (
@@ -73,6 +89,8 @@ def test_mkdocs_hook(
   command: str,
   requirements: t.List[str],
   second_line_regex: str,
+  steps_filename: str,
+  steps_content: str,
 ) -> None:
   """
   This unittest uses Docker to test the readthedocs-custom-steps hook, verifying the output from
@@ -85,13 +103,13 @@ def test_mkdocs_hook(
   with contextlib.ExitStack() as stack:
     tmpfile = stack.enter_context(tempfile.NamedTemporaryFile('w', delete=False))
     stack.callback(Path(tmpfile.name).unlink)
-    tmpfile.write(CUSTOM_STEPS_YAML)
+    tmpfile.write(steps_content)
     tmpfile.close()
 
     volumes = {
       PIP_CACHES_VOLUME: {'bind': '/root/.cache/pip', 'mode': 'rw'},
       PROJECT_DIRECTORY: {'bind': '/opt/project', 'mode': 'ro'},
-      tmpfile.name: {'bind': '/opt/.readthedocs-custom-steps.yml', 'mode': 'ro'}}
+      tmpfile.name: {'bind': f'/opt/{steps_filename}', 'mode': 'ro'}}
 
     if rtd_config:
       tmpfile = stack.enter_context(tempfile.NamedTemporaryFile('w', delete=False))
@@ -103,13 +121,15 @@ def test_mkdocs_hook(
     container = client.containers.run(
       python_image,
       volumes=volumes,
-      command=['bash', '-c', textwrap.dedent(f'''
+      command=['sh', '-c', textwrap.dedent(f'''
         set -e
         cp -r /opt/project /tmp/rtdcs
         rm -rf /tmp/rtdcs/*.egg-info /tmp/rtdcs/build
 
         # Install rtd-cs
-        READTHEDOCS=True pip install -q {" ".join(map(shlex.quote, requirements))} /tmp/rtdcs 2>/dev/null
+        python -m pip install --upgrade pip
+        python -m pip install PyYAML
+        READTHEDOCS=True pip install {" ".join(map(shlex.quote, requirements))} /tmp/rtdcs -v 1>&2
 
         # Setup test directory
         mkdir /tmp/test; cd /tmp/test;
@@ -128,7 +148,7 @@ def test_mkdocs_hook(
       stdin_open=False,
     )
 
-    stack.callback(lambda: stop_and_remove_container(container))
+    #stack.callback(lambda: stop_and_remove_container(container))
 
     exit_code = container.wait()['StatusCode']
     result = container.logs().decode()

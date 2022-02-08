@@ -1,3 +1,4 @@
+# Requires shut==0.21.1
 name: readthedocs-custom-steps
 version: 0.5.1
 license: MIT
@@ -7,7 +8,7 @@ author:
 
 url: https://github.com/NiklasRosenstein/readthedocs-custom-steps/
 description: A hack to run custom steps when building documentation on Read the Docs.
-readme: ../README.md
+readme: readme.md
 
 wheel: False
 install:
@@ -17,7 +18,8 @@ install:
 
 requirements:
 - python ^3.5
-- PyYAML ^5.0
+- PyYAML >=5.0
+- tomli >=1.2.3
 
 test-requirements:
 - docker ^5.0.0
@@ -26,5 +28,5 @@ test-requirements:
 
 test-drivers:
 - type: pytest
-  parallelism: 8
+  parallelism: 2
 - type: mypy

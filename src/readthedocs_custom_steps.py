@@ -4,9 +4,11 @@ import os
 import re
 import subprocess
 import sys
+import textwrap
 import typing as t
 from pathlib import Path
 
+import tomli
 import yaml
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
@@ -16,6 +18,7 @@ log = logging.getLogger(__name__)
 PYENV_SHIMS_DIR = Path(os.path.expanduser('~')) / '.pyenv/shims'
 READTHEDOCS_CONFIG = Path('.readthedocs.yml')
 READTHEDOCS_CS_CONFIG = Path('.readthedocs-custom-steps.yml')
+PYPROJECT_TOML = Path('pyproject.toml')
 
 
 def get_referenced_requirements_files() -> t.List[str]:
@@ -35,7 +38,7 @@ def get_referenced_requirements_files() -> t.List[str]:
 
 def find_config_file() -> Path:
   """
-  Finds the Rtd-CS config file.
+  Finds the RtdCS config file.
   """
 
   choices: t.List[Path] = []
@@ -74,17 +77,30 @@ def main():
     print('readthedocs-custom-steps', __version__)
     return
 
-  config_file = find_config_file()
-  steps = yaml.safe_load(config_file.read_text())['steps']
+  if PYPROJECT_TOML.exists():
+    config = tomli.loads(PYPROJECT_TOML.read_text()).get('tool', {}).get('readthedocs-custom-steps')
+  else:
+    config = None
+
+  if config is None:
+    config_file = find_config_file()
+    config = yaml.safe_load(config_file.read_text())
 
   env = os.environ.copy()
-
   shims = find_pyenv_shims()
   if shims:
     env.update({f'PYTHON{x}{y}': p for (x, y), p in shims.items()})
     env['PYTHON'] = shims[max(shims)]
 
-  bash_script = '\n'.join(['set -e'] + steps)
+  bash_script = 'set -e\n'
+  if 'steps' in config:
+    assert isinstance(config['steps'], list)
+    bash_script += '\n'.join(config['steps'])
+  elif 'script' in config:
+    bash_script += textwrap.dedent(config['script'])
+  else:
+    raise RuntimeError('configuration contains no "script" or "steps" key')
+    
   sys.exit(subprocess.call(['bash', '-c', bash_script] + sys.argv, env=env))
 
 
