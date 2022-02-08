@@ -20,7 +20,7 @@ jobs:
       with:
         python-version: 3.9
     - name: Install dependencies
-      run: pip install shut==0.17.1 -q
+      run: pip install shut==0.21.1 -q
     - name: Lint
       run: shut pkg checks
 
@@ -34,7 +34,7 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
-        pip install shut==0.17.1 -q
+        pip install shut==0.21.1 -q
     - name: Run unit tests
       run: |
         shut pkg test --isolate
