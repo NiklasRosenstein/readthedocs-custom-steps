@@ -27,7 +27,7 @@ if os.path.isfile(new_executable):
   print('appears to be already installed')
   sys.exit(0)
 
-script = '''#!/bin/bash
+script = '''#!{SHELL}
 set -e
 if [[ "$1" == "-m" ]] && [[ "$2" == "mkdocs" ]] && [[ "$3" == "build" ]] && [[ -z "$RTD_CUSTOM_ENTRY" ]]; then
   shift
@@ -38,7 +38,7 @@ elif [[ "$1" == "-m" ]] && [[ "$2" == "sphinx" ]] && [[ -z "$RTD_CUSTOM_ENTRY" ]
 else
   {python} "$@"
 fi
-'''.format(python=pipes.quote(new_executable))
+'''.format(SHELL=os.getenv('SHELL', '/bin/sh'), python=pipes.quote(new_executable))
 
 print('"{}" -> "{}"'.format(sys.executable, new_executable))
 if not args.dry:

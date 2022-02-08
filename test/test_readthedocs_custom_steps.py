@@ -47,50 +47,30 @@ def stop_and_remove_container(container):
 @pytest.mark.parametrize(
   argnames='python_image',
   argvalues=[
-    #'python:3.6-alpine',
-    #'python:3.7-alpine',
-    #'python:3.8-alpine',
-    'python:3.9-alpine',
-    'python:3.10-alpine',
-  ])
-@pytest.mark.parametrize(
-  argnames='config_dir',
-  argvalues=['.', 'docs'],
+    '3.6-alpine',
+    '3.7-alpine',
+    '3.8-alpine',
+    '3.9-alpine',
+    '3.10-alpine',
+  ],
 )
 @pytest.mark.parametrize(
-  argnames='rtd_config',
-  argvalues=[None, READTHEDOCS_CONFIG_YAML],
+  argnames='config_type',
+  argvalues=['CustomFile:$pwd', 'CustomFile:docs', 'Pyproject:$pwd'],
 )
 @pytest.mark.parametrize(
-  argnames=('steps_filename', 'steps_content'),
-  argvalues=[
-    ('.readthedocs-custom-steps.yml', READTHEDOCS_CONFIG_YAML),
-    ('pyproject.toml', PYPROJECT_TOML),
-  ]
+  argnames='with_rtd_config',
+  argvalues=['WithRtdConfig', 'WithoutRtdConfig'],
 )
 @pytest.mark.parametrize(
-  argnames=('command', 'requirements', 'second_line_regex'),
-  argvalues=[
-    (
-      'mkdocs build --clean --site-dir _site/html --config-file mkdocs.yml',
-      ['mkdocs==1.2.3'],
-      r'python -m mkdocs, version .*$',
-    ),
-    (
-      'sphinx -T -b html -d _build/doctrees -D language=en . _build/html',
-      ['sphinx'],
-      r'(__main__\.py|sphinx) .*$',
-    ),
-  ])
+  argnames='tool',
+  argvalues=['mkdocs', 'sphinx'],
+)
 def test_mkdocs_hook(
   python_image: str,
-  config_dir: str,
-  rtd_config: t.Optional[str],
-  command: str,
-  requirements: t.List[str],
-  second_line_regex: str,
-  steps_filename: str,
-  steps_content: str,
+  config_type: str,
+  with_rtd_config: bool,
+  tool: str,
 ) -> None:
   """
   This unittest uses Docker to test the readthedocs-custom-steps hook, verifying the output from
@@ -98,6 +78,26 @@ def test_mkdocs_hook(
   into an infinite loop of invoking itself.
   """
 
+  config_type, config_dir = config_type.split(':')
+
+  if config_type == 'CustomFile':
+    steps_content = CUSTOM_STEPS_YAML
+    steps_filename = '.readthedocs-custom-steps.yml'
+  else:
+    steps_content = PYPROJECT_TOML
+    steps_filename = 'pyproject.toml'
+
+  if tool == 'mkdocs':
+    command = 'mkdocs build --clean --site-dir _site/html --config-file mkdocs.yml'
+    requirements = ['mkdocs==1.2.3']
+    second_line_regex = r'python -m mkdocs, version .*$'
+  else:
+    command = 'sphinx -T -b html -d _build/doctrees -D language=en . _build/html'
+    requirements = ['sphinx']
+    second_line_regex = r'(__main__\.py|sphinx) .*$'
+
+  if config_dir == '$pwd':
+    config_dir = '.'
 
   client = docker.from_env()
   with contextlib.ExitStack() as stack:
@@ -111,15 +111,15 @@ def test_mkdocs_hook(
       PROJECT_DIRECTORY: {'bind': '/opt/project', 'mode': 'ro'},
       tmpfile.name: {'bind': f'/opt/{steps_filename}', 'mode': 'ro'}}
 
-    if rtd_config:
+    if with_rtd_config == 'WithRtdConfig':
       tmpfile = stack.enter_context(tempfile.NamedTemporaryFile('w', delete=False))
       stack.callback(Path(tmpfile.name).unlink)
-      tmpfile.write(rtd_config)
+      tmpfile.write(READTHEDOCS_CONFIG_YAML)
       tmpfile.close()
       volumes[tmpfile.name] = {'bind': '/opt/.readthedocs.yml', 'mode': 'ro'}
 
     container = client.containers.run(
-      python_image,
+      'python:' + python_image,
       volumes=volumes,
       command=['sh', '-c', textwrap.dedent(f'''
         set -e
@@ -127,15 +127,13 @@ def test_mkdocs_hook(
         rm -rf /tmp/rtdcs/*.egg-info /tmp/rtdcs/build
 
         # Install rtd-cs
-        python -m pip install --upgrade pip
-        python -m pip install PyYAML
         READTHEDOCS=True pip install {" ".join(map(shlex.quote, requirements))} /tmp/rtdcs -v 1>&2
 
         # Setup test directory
         mkdir /tmp/test; cd /tmp/test;
         if [ -f /opt/.readthedocs.yml ]; then cp /opt/.readthedocs.yml .; fi
         mkdir -p {config_dir}
-        cp /opt/.readthedocs-custom-steps.yml {config_dir}
+        cp /opt/{steps_filename} {config_dir}
 
         # Link shim to test if rtd-cs detects it
         mkdir -p /root/.pyenv/shims
@@ -148,7 +146,7 @@ def test_mkdocs_hook(
       stdin_open=False,
     )
 
-    #stack.callback(lambda: stop_and_remove_container(container))
+    stack.callback(lambda: stop_and_remove_container(container))
 
     exit_code = container.wait()['StatusCode']
     result = container.logs().decode()
@@ -157,6 +155,6 @@ def test_mkdocs_hook(
       raise RuntimeError(f'container returned exit code {exit_code}')
 
     lines = result.splitlines()
-    assert lines[0] == f'rtd-custom-steps says {command}'
-    assert re.match(second_line_regex, lines[1]) is not None
-    assert lines[2] == '/root/.pyenv/shims/python3.7'
+    assert lines[-3] == f'rtd-custom-steps says {command}', lines[-3]
+    assert re.match(second_line_regex, lines[-2]) is not None, lines[-2]
+    assert lines[-1] == '/root/.pyenv/shims/python3.7', lines[-1]

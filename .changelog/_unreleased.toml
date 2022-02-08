@@ -1,0 +1,11 @@
+[[entries]]
+id = "61c7befb-181d-49ec-be6e-3752307418ba"
+type = "fix"
+description = "Support for other POSIX systems that do not have Bash installed by relying on `$SHELL` instead"
+author = "@NiklasRosenstein"
+
+[[entries]]
+id = "67f38360-82be-4d1d-b3f6-3c1f58892c93"
+type = "feature"
+description = "Deprecate file based configuration and support new Pyproject configuration under `[tool.readthedocs-custom-steps]`"
+author = "@NiklasRosenstein"

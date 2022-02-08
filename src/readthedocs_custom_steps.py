@@ -79,12 +79,14 @@ def main():
 
   if PYPROJECT_TOML.exists():
     config = tomli.loads(PYPROJECT_TOML.read_text()).get('tool', {}).get('readthedocs-custom-steps')
+    filename = PYPROJECT_TOML
   else:
     config = None
+    filename = None
 
   if config is None:
-    config_file = find_config_file()
-    config = yaml.safe_load(config_file.read_text())
+    filename = find_config_file()
+    config = yaml.safe_load(filename.read_text())
 
   env = os.environ.copy()
   shims = find_pyenv_shims()
@@ -92,6 +94,7 @@ def main():
     env.update({f'PYTHON{x}{y}': p for (x, y), p in shims.items()})
     env['PYTHON'] = shims[max(shims)]
 
+  shell = os.getenv('SHELL', '/bin/sh')
   bash_script = 'set -e\n'
   if 'steps' in config:
     assert isinstance(config['steps'], list)
@@ -99,9 +102,9 @@ def main():
   elif 'script' in config:
     bash_script += textwrap.dedent(config['script'])
   else:
-    raise RuntimeError('configuration contains no "script" or "steps" key')
-    
-  sys.exit(subprocess.call(['bash', '-c', bash_script] + sys.argv, env=env))
+    raise RuntimeError(f'configuration "{filename}" contains no "script" or "steps" key')
+
+  sys.exit(subprocess.call([shell, '-c', bash_script] + sys.argv, env=env))
 
 
 if __name__ == '__main__':
