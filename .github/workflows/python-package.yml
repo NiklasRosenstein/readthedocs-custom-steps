@@ -37,4 +37,4 @@ jobs:
         pip install shut==0.21.1 -q
     - name: Run unit tests
       run: |
-        shut pkg test --isolate
+        READTHEDOCS=True shut pkg test --isolate
