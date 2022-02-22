@@ -6,7 +6,7 @@ type = "fix"
 description = "use POSIX compliant `=` as comparator in shell script that replaces the Python executable;"
 author = "@NiklasRosenstein"
 issues = [
-  "https://github.com/readthedocs/readthedocs.org/pull/7289"
+  "https://github.com/NiklasRosenstein/readthedocs-custom-steps/issues/7"
 ]
 
 [[entries]]
