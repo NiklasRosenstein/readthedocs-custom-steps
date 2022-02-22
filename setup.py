@@ -64,7 +64,7 @@ extras_require['test'] = test_requirements
 
 setuptools.setup(
   name = 'readthedocs-custom-steps',
-  version = '0.6.1',
+  version = '0.6.2',
   author = 'Niklas Rosenstein',
   author_email = 'rosensteinniklas@gmail.com',
   description = 'A hack to run custom steps when building documentation on Read the Docs.',

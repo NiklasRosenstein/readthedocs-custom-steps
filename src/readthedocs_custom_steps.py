@@ -12,7 +12,7 @@ import tomli
 import yaml
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 
 log = logging.getLogger(__name__)
 PYENV_SHIMS_DIR = Path(os.path.expanduser('~')) / '.pyenv/shims'

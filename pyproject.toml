@@ -1,5 +1,5 @@
 [project]
-version = "0.6.1"
+version = "0.6.2"
 
 [tool.readthedocs-custom-steps]
 script = """
@@ -13,5 +13,6 @@ plugins = ['changelog', 'release']
 
 [tool.slam.release]
 references = [
-  { file = "setup.py", pattern = "  version = '{version}'"}
+  { file = "package.yaml", pattern = "version: {version}$" },
+  { file = "setup.py", pattern = "  version = '{version}'" },
 ]
