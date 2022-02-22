@@ -1,3 +1,6 @@
+[project]
+version = "0.6.1"
+
 [tool.readthedocs-custom-steps]
 script = """
 cp readme.md docs/content/index.md
@@ -6,4 +9,9 @@ python -m "$@"
 """
 
 [tool.slam.check]
-plugins = ['changelog']
+plugins = ['changelog', 'release']
+
+[tool.slam.release]
+references = [
+  { file = "setup.py", pattern = "  version = '{version}'"}
+]
