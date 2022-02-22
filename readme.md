@@ -89,6 +89,10 @@ In addition to passing the original arguments to the custom steps, RtdCS provide
 as detected from the `~/.pyenv/shims` folder in the RTD build environment. (e.g. if there is a shim `python3.6` and
 `python3.7`, there'll be `PYTHON`, `PYTHON36` and `PYTHON37` environment variables, and `PYTHON` will point to 3.7).
 
+## Additional links
+
+* [readthedocs.org build status](https://readthedocs.org/projects/readthedocs-custom-steps/)
+
 ---
 
 <p align="center">Copyright &copy; 2022 Niklas Rosenstein</p>
