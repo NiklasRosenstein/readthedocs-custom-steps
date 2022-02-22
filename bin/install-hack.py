@@ -28,14 +28,26 @@ if os.path.isfile(new_executable):
   sys.exit(0)
 
 script = '''#!{SHELL}
+log() {{
+  >&2 echo "[readthedocs-custom-steps shim]:" "$@"
+}}
+
+log "received arguments: $@"
+
+dispatch() {{
+  log "dispatching custom steps"
+  RTD_CUSTOM_ENTRY=true {python} -c "from readthedocs_custom_steps import main; main()" "$@"
+}}
+
 set -e
-if [ "$1" == "-m" ] && [ "$2" == "mkdocs" ] && [ "$3" == "build" ] && [ -z "$RTD_CUSTOM_ENTRY" ]; then
+if [ "$1" = "-m" ] && [ "$2" = "mkdocs" ] && [ "$3" = "build" ] && [ -z "$RTD_CUSTOM_ENTRY" ]; then
   shift
-  RTD_CUSTOM_ENTRY=true {python} -c "from readthedocs_custom_steps import main; main()" "$@"
-elif [ "$1" == "-m" ] && [ "$2" == "sphinx" ] && [ -z "$RTD_CUSTOM_ENTRY" ]; then
+  dispatch "$@"
+elif [ "$1" = "-m" ] && [ "$2" = "sphinx" ] && [ -z "$RTD_CUSTOM_ENTRY" ]; then
   shift
-  RTD_CUSTOM_ENTRY=true {python} -c "from readthedocs_custom_steps import main; main()" "$@"
+  dispatch "$@"
 else
+  log "forwarding to original Python executable"
   {python} "$@"
 fi
 '''.format(SHELL=os.getenv('SHELL', '/bin/sh'), python=pipes.quote(new_executable))

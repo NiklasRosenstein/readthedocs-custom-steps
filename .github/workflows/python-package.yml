@@ -19,10 +19,14 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Install dependencies
+    - name: Install shut
       run: pip install shut==0.21.1 -q
-    - name: Lint
+    - name: Shut package checks
       run: shut pkg checks
+    - name: Install slam
+      run: pip install slam==1.0.0a15 -q
+    - name: Slam checks
+      run: slam check
 
   build:
     runs-on: ubuntu-latest

@@ -150,11 +150,12 @@ def test_mkdocs_hook(
 
     exit_code = container.wait()['StatusCode']
     result = container.logs().decode()
+    print(result)
     if exit_code != 0:
-      print(result)
       raise RuntimeError(f'container returned exit code {exit_code}')
 
     lines = result.splitlines()
+    lines = [l for l in lines if not l.startswith('[readthedocs-custom-steps')]
     assert lines[-3] == f'rtd-custom-steps says {command}', lines[-3]
     assert re.match(second_line_regex, lines[-2]) is not None, lines[-2]
     assert lines[-1] == '/root/.pyenv/shims/python3.7', lines[-1]

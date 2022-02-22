@@ -1,0 +1,18 @@
+docs_dir: content
+site_name: readthedocs-custom-steps
+theme: material
+markdown_extensions:
+- markdown.extensions.extra
+- meta
+- pymdownx.betterem
+- pymdownx.caret
+- pymdownx.details
+- pymdownx.highlight
+- pymdownx.inlinehilite
+- pymdownx.keys
+- pymdownx.mark
+- pymdownx.smartsymbols
+- pymdownx.superfences
+- pymdownx.tabbed: { alternate_style: true }
+- pymdownx.tasklist: { custom_checkbox: true }
+- pymdownx.tilde

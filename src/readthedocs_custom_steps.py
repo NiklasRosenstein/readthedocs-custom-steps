@@ -104,7 +104,10 @@ def main():
   else:
     raise RuntimeError(f'configuration "{filename}" contains no "script" or "steps" key')
 
-  sys.exit(subprocess.call([shell, '-c', bash_script] + sys.argv, env=env))
+  command = [shell, '-c', bash_script] + sys.argv
+  print('[readthedocs-custom-steps dispatch]: running', command, file=sys.stderr)
+
+  sys.exit(subprocess.call(command, env=env))
 
 
 if __name__ == '__main__':

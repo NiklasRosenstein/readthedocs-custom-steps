@@ -1,0 +1,9 @@
+[tool.readthedocs-custom-steps]
+script = """
+cp readme.md docs/index.md
+slam changelog format --all --markdown >docs/changelog.md
+python -m "$@"
+"""
+
+[tool.slam.check]
+plugins = ['changelog']
