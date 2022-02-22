@@ -1,7 +1,7 @@
 [tool.readthedocs-custom-steps]
 script = """
-cp readme.md docs/index.md
-slam changelog format --all --markdown >docs/changelog.md
+cp readme.md docs/content/index.md
+slam changelog format --all --markdown >docs/content/changelog.md
 python -m "$@"
 """
 
