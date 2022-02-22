@@ -1,0 +1,11 @@
+[[entries]]
+id = "cfb1502b-e602-48c5-bb51-623fb793361e"
+type = "fix"
+description = "use POSIX compliant `=` as comparator in shell script that replaces the Python executable;"
+author = "@NiklasRosenstein"
+
+[[entries]]
+id = "e269929f-d819-4542-b69c-85f93a7eb349"
+type = "improvement"
+description = "add logging to stderr from readthedocs-custom-steps"
+author = "@NiklasRosenstein"
