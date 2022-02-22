@@ -24,7 +24,7 @@ jobs:
     - name: Shut package checks
       run: shut pkg checks
     - name: Install slam
-      run: pip install slam==1.0.0a15 -q
+      run: pip install slam-cli==1.0.0a15 -q
     - name: Slam checks
       run: slam check
 
