@@ -1,5 +1,6 @@
 version: 2
-mkdocs: {}
+mkdocs:
+  configuration: docs/mkdocs.yml
 build:
   os: ubuntu-20.04
   tools:
