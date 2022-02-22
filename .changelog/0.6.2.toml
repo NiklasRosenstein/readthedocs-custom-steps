@@ -5,6 +5,9 @@ id = "cfb1502b-e602-48c5-bb51-623fb793361e"
 type = "fix"
 description = "use POSIX compliant `=` as comparator in shell script that replaces the Python executable;"
 author = "@NiklasRosenstein"
+issues = [
+  "https://github.com/readthedocs/readthedocs.org/pull/7289"
+]
 
 [[entries]]
 id = "e269929f-d819-4542-b69c-85f93a7eb349"
